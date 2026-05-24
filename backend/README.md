@@ -66,13 +66,21 @@ az deployment group validate \
 
 Run from `backend/src`.
 
-1. Install dependencies (if needed)
+1. Create and activate virtual environment (from `backend`)
+
+```bash
+python -m venv .venv
+# PowerShell
+.\.venv\Scripts\Activate.ps1
+```
+
+2. Install dependencies (if needed)
 
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Package and deploy with zip deploy
+3. Package and deploy with zip deploy
 
 ```bash
 python -m zipfile -c weblab-test-func.zip host.json function_app.py requirements.txt
@@ -80,6 +88,12 @@ az functionapp deployment source config-zip \
   --resource-group weblab-test-rg \
   --name weblab-test-func \
   --src weblab-test-func.zip
+```
+
+4. Remove the generated zip artifact after deployment (it is ignored by git)
+
+```bash
+rm weblab-test-func.zip
 ```
 
 ## Testing
