@@ -12,7 +12,7 @@ This document covers backend infrastructure deployment, code deployment, and API
 
 - Azure CLI logged in to the correct subscription
 - Azure Functions Core Tools 4+
-- Python virtual environment available in the repository
+- Python virtual environment available in `backend/src/.venv`
 - Access to create/update resources in the target resource group
 
 ## Environment Conventions
@@ -66,9 +66,10 @@ az deployment group validate \
 
 Run from `backend/src`.
 
-1. Create and activate virtual environment (from `backend`)
+1. Create and activate virtual environment
 
 ```bash
+cd backend/src
 python -m venv .venv
 # PowerShell
 .\.venv\Scripts\Activate.ps1
@@ -80,20 +81,10 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-3. Package and deploy with zip deploy
+3. Publish function app (single command)
 
 ```bash
-python -m zipfile -c weblab-test-func.zip host.json function_app.py requirements.txt
-az functionapp deployment source config-zip \
-  --resource-group weblab-test-rg \
-  --name weblab-test-func \
-  --src weblab-test-func.zip
-```
-
-4. Remove the generated zip artifact after deployment (it is ignored by git)
-
-```bash
-rm weblab-test-func.zip
+func azure functionapp publish weblab-test-func --python
 ```
 
 ## Testing
