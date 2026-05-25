@@ -1,1 +1,72 @@
-GET https://weblab-test-func.azurewebsites.net/api/health
+@baseUrl = https://weblab-test-func.azurewebsites.net/api
+@weblabId = TEST_WEBLAB
+@invalidWeblabId = test weblab
+
+### Health
+GET {{baseUrl}}/health
+
+### Validate Weblab Id format + uniqueness
+POST {{baseUrl}}/weblabs/validate-id
+Content-Type: application/json
+
+{
+	"weblabId": "{{weblabId}}"
+}
+
+### Validate Weblab Id (invalid - lowercase and spaces)
+POST {{baseUrl}}/weblabs/validate-id
+Content-Type: application/json
+
+{
+	"weblabId": "{{invalidWeblabId}}"
+}
+
+### Create Weblab (C,T1)
+POST {{baseUrl}}/weblabs
+Content-Type: application/json
+
+{
+	"weblabId": "{{weblabId}}",
+	"name": "Test Weblab",
+	"assignmentMode": "session_based",
+	"treatmentSet": "C,T1"
+}
+
+### List Weblabs
+GET {{baseUrl}}/weblabs
+
+### Get Weblab by id (replace value)
+GET {{baseUrl}}/weblabs/{{weblabId}}
+
+### Update Allocation (replace id)
+PUT {{baseUrl}}/weblabs/{{weblabId}}/allocation
+Content-Type: application/json
+
+{
+	"regionId": "US",
+	"stamp": "S1",
+	"splits": {
+		"C": 75,
+		"T1": 25
+	}
+}
+
+### getTreatment for session_based (replace id)
+POST {{baseUrl}}/weblabs/{{weblabId}}/getTreatment
+Content-Type: application/json
+
+{
+	"sessionId": "session-123",
+	"regionId": "US",
+	"stamp": "S1"
+}
+
+### getTreatment for user_based example payload
+POST {{baseUrl}}/weblabs/{{weblabId}}/getTreatment
+Content-Type: application/json
+
+{
+	"userId": "u-100",
+	"regionId": "US",
+	"stamp": "S1"
+}
