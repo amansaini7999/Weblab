@@ -42,15 +42,16 @@ Assignments use deterministic hash ranges so expansion and contraction are monot
 
 In this repository phase:
 
-- Azure Functions backend on Flex Consumption
+- Azure Functions backend with weblab CRUD/publish/resolve APIs
+- deterministic sticky assignment logic for `C,T1` and `C,T1,T2`
 - modular Bicep infrastructure in `backend/infra`
-- minimal health endpoint for deployment smoke tests
+- PostgreSQL schema scaffold and repository integration path
 
 Planned next:
 
-- weblab CRUD and publish APIs
-- deterministic resolve API with sticky assignment
-- persistence layer and versioned configurations
+- end-to-end PostgreSQL persistence rollout in deployed environment
+- authentication/authorization and team-level ownership controls
+- production hardening (migrations, observability dashboards, CI/CD)
 
 ## Repository Layout
 

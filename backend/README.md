@@ -92,3 +92,93 @@ func azure functionapp publish weblab-test-func --python
 Open `backend/test.http` and run:
 
 - `GET https://weblab-test-func.azurewebsites.net/api/health`
+
+## API Endpoints (MVP)
+
+All routes are anonymous for now and served under `/api`.
+
+- `POST /api/weblabs`
+- `POST /api/weblabs/validate-id`
+- `GET /api/weblabs`
+- `GET /api/weblabs/{weblabId}`
+- `PUT /api/weblabs/{weblabId}/allocation`
+- `POST /api/weblabs/{weblabId}/getTreatment`
+
+Validate weblab id payload example:
+
+```json
+{
+  "weblabId": "TEST_WEBLAB"
+}
+```
+
+Weblab id rules:
+
+- must be unique
+- must be uppercase
+- no spaces
+- allowed characters: `A-Z`, `0-9`, `_`, `-`
+
+Create payload example:
+
+```json
+{
+  "weblabId": "TEST_WEBLAB",
+  "name": "checkout-hero-test",
+  "assignmentMode": "session_based",
+  "treatmentSet": "C,T1"
+}
+```
+
+Update allocation payload example:
+
+```json
+{
+  "regionId": "US",
+  "stamp": "S1",
+  "splits": {
+    "C": 80,
+    "T1": 20
+  }
+}
+```
+
+getTreatment payload examples:
+
+```json
+{
+  "sessionId": "session-123",
+  "regionId": "US",
+  "stamp": "S1"
+}
+```
+
+```json
+{
+  "userId": "u-1",
+  "regionId": "US",
+  "stamp": "S1"
+}
+```
+
+## Local Development and Tests
+
+From `backend/src`:
+
+```bash
+python -m venv .venv
+# PowerShell
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+func start
+```
+
+## Database Notes
+
+The app defaults to an in-memory repository for quick MVP iteration.
+
+To enable PostgreSQL repository wiring, set:
+
+- `WEBLAB_DATABASE_URL`
+
+The initial schema for `weblabs`, `weblab_versions`, and `weblab_audit` is in `backend/src/sql/schema.sql`.
